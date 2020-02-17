@@ -19,7 +19,7 @@ class Todo extends React.Component {
   }
   //todoを登録するメソッドを定義
   addTodo = () => {
-    //初期値を代入
+    //現在の配列と現在のnameの値を代入　
     const { todos, name } = this.state;
     //
     this.setState({
@@ -27,11 +27,22 @@ class Todo extends React.Component {
       todos: [...todos, name]
     });
   }
+  //削除するメソッドを定義
+  //index番号が引数で現在の配列と現在のnameの値を代入
+  removeTodo = (index) => {
+    const { todos, name } = this.state;
+    //配列の複製を作ってindex番号０と受け取ったindex番号を切り抜く
+    //もう一つ配列複製して、受け取ったindex番号と＋１番号を切り抜いて
+    //残ったものがtodos: []に残る
+    this.setState({
+      todos: [...todos.slice(0, index), ...todos.slice(index + 1)]
+    });
+  }
 
   render() {
-    // todosに初期値の空の配列とnameの空を代入
+    // todosに配列を代入
     const { todos } = this.state;
-    //変数todosを.mapメソッドでtodoの値とindex番号に分ける
+    //変数todosを.mapメソッドでtodo（値）とindex番号に分ける
     //それをli要素のkeyにindex番号を持たし、変数todoの値をliで表示する
     return (
       //入力されたらonInputメソッド発動し
@@ -42,6 +53,7 @@ class Todo extends React.Component {
         <ul>
           {todos.map((todo, index) => <li key={index}>
             {todo}
+            <button onClick={() => { this.removeTodo(index) }}>削除</button>
           </li>)}
         </ul>
       </div>
